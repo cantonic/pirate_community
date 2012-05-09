@@ -17,9 +17,7 @@ set :ssh_options,     { :forward_agent => true }
 set :rails_env,       "production"
 set :normalize_asset_timestamps, false
 
-role :web,    "178.79.129.82"
-role :app,    "178.79.129.82"
-role :db,     "178.79.129.82", :primary => true
+#role :db,     "178.79.129.82", :primary => true
 
 set(:latest_release)  { fetch(:current_path) }
 set(:release_path)    { fetch(:current_path) }

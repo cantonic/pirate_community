@@ -1,4 +1,4 @@
-server 'pirates.cantonic.com', :app, :web, :primary => true
+server '178.79.129.82', :app, :web, :primary => true
 set :branch, "master"
 set :deploy_to, "/home/deployer/apps/#{application}_production"
 
