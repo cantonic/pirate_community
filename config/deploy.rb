@@ -10,7 +10,7 @@ set :use_sudo,        false
 set :scm, :git
 set :repository, "git@github.com:cantonic/pirate_community.git"
 
-#set :deploy_via, :remote_cache
+set :deploy_via, :remote_cache
 set :deploy_env, 'production'
 set :migrate_target,  :current
 set :ssh_options,     { :forward_agent => true }
@@ -32,7 +32,7 @@ set(:previous_revision) { capture("cd #{current_path}; git rev-parse --short HEA
 default_environment["RAILS_ENV"] = 'production'
 
 # Use our ruby-1.9.2-p290@my_site gemset
-default_environment["RUBY_VERSION"] = "ruby-1.9.3-p194 "
+default_environment["RUBY_VERSION"] = "ruby-1.9.3-p194"
 
 default_run_options[:shell] = 'bash'
 
@@ -48,7 +48,7 @@ namespace :deploy do
     dirs = [deploy_to, shared_path]
     dirs += shared_children.map { |d| File.join(shared_path, d) }
     run "#{try_sudo} mkdir -p #{dirs.join(' ')} && #{try_sudo} chmod g+w #{dirs.join(' ')}"
-    run "git clone #{repository} #{current_path}"
+    run "git clone -b #{branch} #{repository} #{current_path}"
   end
 
   task :cold do
