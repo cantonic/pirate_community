@@ -9,7 +9,7 @@ set :use_sudo,        false
 
 set :scm, :git
 set :repository, "git@github.com:cantonic/pirate_community.git"
-set :deploy_to, "/home/apps/#{application}/#{stage}"
+
 #set :deploy_via, :remote_cache
 set :deploy_env, 'production'
 set :migrate_target,  :current
@@ -98,22 +98,7 @@ namespace :deploy do
       run "find #{asset_paths} -exec touch -t #{stamp} {} ';'; true", :env => { "TZ" => "UTC" }
     end
   end
-
-  desc "Zero-downtime restart of Unicorn"
-	task :restart, :except => { :no_release => true } do
-	  run "test -f /tmp/unicorn.#{application}_#{stage}.pid && kill -s USR2 `cat /tmp/unicorn.#{application}_#{stage}.pid`"
-	end
-
-
-  desc "Start unicorn"
-  task :start, :except => { :no_release => true } do
-    run "cd #{current_path} ; bundle exec unicorn -c config/unicorn_#{stage}.rb -D"
-  end
-
-  desc "Stop unicorn"
-  task :stop, :except => { :no_release => true } do
-    run "kill -s QUIT `cat /tmp/unicorn.#{application}_#{stage}.pid`"
-  end  
+ 
 
   namespace :rollback do
     desc "Moves the repo back to the previous version of HEAD"
