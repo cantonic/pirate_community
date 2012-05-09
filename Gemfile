@@ -36,3 +36,18 @@ gem 'jquery-rails'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
+
+gem "pry", :group => [:test, :development]
+gem "pry-rails", :group => [:test, :development]
+gem "rails-erd", :group => :development
+
+gem "rspec-rails", :group => [:test, :development]
+group :test do
+  gem "factory_girl_rails"
+  gem "capybara"
+  gem "guard-rspec"
+	gem "vcr"
+	gem "webmock"
+	gem "capybara-mechanize"
+	gem "launchy"
+end
