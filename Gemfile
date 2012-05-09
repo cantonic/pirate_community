@@ -51,3 +51,5 @@ group :test do
 	gem "capybara-mechanize"
 	gem "launchy"
 end
+
+gem 'social_stream', '>= 0.19.0'
