@@ -1,4 +1,4 @@
-server '178.79.129.82', :app, :web, :primary => true
+server '178.79.129.82', :app, :web, :db, :primary => true
 set :branch, "master"
 set :deploy_to, "/home/deployer/apps/#{application}_production"
 
@@ -38,7 +38,7 @@ namespace :deploy do
 
   desc "Update the deployed code."
   task :update_code, :except => { :no_release => true } do
-    run "cd #{current_path}; git fetch origin; git reset --hard #{branch}"
+    run "cd #{current_path}; git fetch origin #{branch}; git reset --hard #{branch}"
     finalize_update
   end
 
@@ -65,6 +65,8 @@ namespace :deploy do
       ln -s #{shared_path}/pids #{latest_release}/tmp/pids &&
       ln -sf #{shared_path}/database.yml #{latest_release}/config/database.yml
     CMD
+
+		run "cd #{current_path} ; bundle install"
 
     if fetch(:normalize_asset_timestamps, true)
       stamp = Time.now.utc.strftime("%Y%m%d%H%M.%S")
