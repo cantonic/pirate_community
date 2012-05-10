@@ -64,6 +64,7 @@ namespace :deploy do
       ln -s #{shared_path}/system #{latest_release}/public/system &&
       ln -s #{shared_path}/pids #{latest_release}/tmp/pids &&
       ln -sf #{shared_path}/database.yml #{latest_release}/config/database.yml
+			ln -sf #{shared_path}/email.yml #{latest_release}/config/email.yml
     CMD
 
 		run "cd #{current_path} ; bundle install"
