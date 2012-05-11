@@ -19,3 +19,4 @@
 
 config/database.yml
 config/email.yml
+config/app_config.yml

@@ -65,7 +65,7 @@ PirateCommunity::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 	
-	config.action_mailer.default_url_options = { :host => 'cantonic.com' }
+	config.action_mailer.default_url_options = YAML.load_file("config/app_config.yml")["production"].symbolize_keys!
 	config.action_mailer.delivery_method = :smtp
 	config.action_mailer.smtp_settings = YAML.load_file("config/email.yml")["production"].symbolize_keys!
 end
