@@ -38,7 +38,7 @@ namespace :deploy do
 
   desc "Update the deployed code."
   task :update_code, :except => { :no_release => true } do
-    run "cd #{current_path}; git fetch origin #{branch}; git reset --hard #{branch}"
+    run "cd #{current_path}; git pull origin #{branch}"
     finalize_update
   end
 
@@ -64,7 +64,7 @@ namespace :deploy do
       ln -s #{shared_path}/system #{latest_release}/public/system &&
       ln -s #{shared_path}/pids #{latest_release}/tmp/pids &&
       ln -sf #{shared_path}/database.yml #{latest_release}/config/database.yml
-			ln -sf #{shared_path}/email.yml #{latest_release}/config/email.yml
+      ln -sf #{shared_path}/email.yml #{latest_release}/config/email.yml
     CMD
 
 		run "cd #{current_path} ; bundle install"
