@@ -34,7 +34,13 @@ default_environment["RUBY_VERSION"] = "ruby-1.9.3-p194"
 
 default_run_options[:shell] = 'bash'
 
+before 'deploy:restart', 'deploy:rebuild_sphinx'
+
 namespace :deploy do
+	task :rebuild_sphinx do
+    run "cd #{ current_path } && bundle exec \"rake ts:rebuild RAILS_ENV=production\""
+  end
+	
   desc "Deploy your application"
   task :default do
     update
@@ -62,7 +68,7 @@ namespace :deploy do
 
   desc "Update the deployed code."
   task :update_code, :except => { :no_release => true } do
-    run "cd #{current_path}; git fetch origin; git reset --hard #{branch}"
+    run "cd #{current_path}; git pull origin #{branch}"
     finalize_update
   end
 
@@ -87,8 +93,12 @@ namespace :deploy do
       ln -s #{shared_path}/log #{latest_release}/log &&
       ln -s #{shared_path}/system #{latest_release}/public/system &&
       ln -s #{shared_path}/pids #{latest_release}/tmp/pids &&
-      ln -sf #{shared_path}/database.yml #{latest_release}/config/database.yml
+      ln -sf #{shared_path}/database.yml #{latest_release}/config/database.yml &&
+			ln -sf #{shared_path}/email.yml #{latest_release}/config/email.yml &&
+			ln -sf #{shared_path}/app_config.yml #{latest_release}/config/app_config.yml
     CMD
+
+		run "cd #{current_path} ; bundle install"
 
     if fetch(:normalize_asset_timestamps, true)
       stamp = Time.now.utc.strftime("%Y%m%d%H%M.%S")
@@ -96,7 +106,6 @@ namespace :deploy do
       run "find #{asset_paths} -exec touch -t #{stamp} {} ';'; true", :env => { "TZ" => "UTC" }
     end
   end
- 
 
   namespace :rollback do
     desc "Moves the repo back to the previous version of HEAD"
